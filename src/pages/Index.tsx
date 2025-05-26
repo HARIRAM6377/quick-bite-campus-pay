@@ -122,12 +122,12 @@ const Index = () => {
 
   if (isAdminPanel) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
         <Header cartItems={0} onCartClick={() => {}} isAdmin={true} />
-        <div className="p-4">
+        <div className="p-6">
           <Button 
             onClick={() => setIsAdminPanel(false)}
-            className="mb-4 bg-blue-500 hover:bg-blue-600"
+            className="mb-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
           >
             Switch to Student Panel
           </Button>
@@ -138,82 +138,93 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Header 
         cartItems={getTotalItems()} 
         onCartClick={() => setIsCartOpen(true)} 
       />
       
-      <div className="max-w-md mx-auto p-4">
-        <div className="mb-6 text-center">
-          <Button 
-            onClick={() => setIsAdminPanel(true)}
-            className="bg-purple-500 hover:bg-purple-600 mr-2"
-          >
-            Admin Panel
-          </Button>
-          {currentBill && (
-            <Button 
-              onClick={() => setIsBillOpen(true)}
-              className="bg-green-500 hover:bg-green-600"
-            >
-              View Bill
-            </Button>
-          )}
+      <div className="max-w-md mx-auto p-6">
+        <div className="mb-8 text-center space-y-4">
+          <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+            <div className="flex flex-col space-y-3">
+              <Button 
+                onClick={() => setIsAdminPanel(true)}
+                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+              >
+                🔧 Admin Panel
+              </Button>
+              {currentBill && (
+                <Button 
+                  onClick={() => setIsBillOpen(true)}
+                  className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                >
+                  📄 View Current Bill
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
 
         <FoodCounter
-          title="🥤 Juices & Beverages"
+          title="Juices & Beverages"
           items={menuData.juices}
           onAddToCart={addToCart}
           onRemoveFromCart={removeFromCart}
           cartItems={cartItems}
-          color="bg-gradient-to-r from-orange-400 to-orange-500"
+          color="bg-gradient-to-br from-orange-500 to-red-500"
+          icon="🥤"
         />
 
         <FoodCounter
-          title="🥞 Dosa & Traditional"
+          title="Dosa & Traditional"
           items={menuData.dosa}
           onAddToCart={addToCart}
           onRemoveFromCart={removeFromCart}
           cartItems={cartItems}
-          color="bg-gradient-to-r from-green-400 to-green-500"
+          color="bg-gradient-to-br from-emerald-500 to-green-600"
+          icon="🥞"
         />
 
         <FoodCounter
-          title="🥢 Veg Chinese & Parotta"
+          title="Veg Chinese & Parotta"
           items={menuData.vegChinese}
           onAddToCart={addToCart}
           onRemoveFromCart={removeFromCart}
           cartItems={cartItems}
-          color="bg-gradient-to-r from-red-400 to-red-500"
+          color="bg-gradient-to-br from-red-500 to-pink-600"
+          icon="🥢"
         />
 
         <FoodCounter
-          title="🍗 Non-Veg Chinese & Kothu"
+          title="Non-Veg Chinese & Kothu"
           items={menuData.nonVegChinese}
           onAddToCart={addToCart}
           onRemoveFromCart={removeFromCart}
           cartItems={cartItems}
-          color="bg-gradient-to-r from-purple-400 to-purple-500"
+          color="bg-gradient-to-br from-purple-500 to-indigo-600"
+          icon="🍗"
         />
 
         <FoodCounter
-          title="🍛 Biryani Specials"
+          title="Biryani Specials"
           items={menuData.biryani}
           onAddToCart={addToCart}
           onRemoveFromCart={removeFromCart}
           cartItems={cartItems}
-          color="bg-gradient-to-r from-yellow-400 to-yellow-500"
+          color="bg-gradient-to-br from-amber-500 to-orange-600"
+          icon="🍛"
         />
 
         <FoodCounter
-          title="🍔 Fried Chicken & Burgers"
+          title="Fried Chicken & Burgers"
           items={menuData.friedChicken}
           onAddToCart={addToCart}
           onRemoveFromCart={removeFromCart}
           cartItems={cartItems}
-          color="bg-gradient-to-r from-blue-400 to-blue-500"
+          color="bg-gradient-to-br from-blue-500 to-cyan-600"
+          icon="🍔"
         />
       </div>
 

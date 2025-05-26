@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Download, Clock } from 'lucide-react';
+import { X, Download, Clock, Receipt, CheckCircle, AlertCircle } from 'lucide-react';
 
 interface BillItem {
   name: string;
@@ -21,70 +21,100 @@ interface BillProps {
 const Bill = ({ isOpen, onClose, orderId, items, total, timestamp, status }: BillProps) => {
   if (!isOpen) return null;
 
-  const statusColors = {
-    preparing: 'bg-yellow-500',
-    ready: 'bg-blue-500',
-    delivered: 'bg-green-500'
+  const statusConfig = {
+    preparing: {
+      color: 'bg-gradient-to-r from-amber-500 to-orange-500',
+      icon: Clock,
+      text: 'Preparing Your Order',
+      description: 'Our chefs are working on your delicious meal'
+    },
+    ready: {
+      color: 'bg-gradient-to-r from-blue-500 to-blue-600',
+      icon: AlertCircle,
+      text: 'Ready for Pickup',
+      description: 'Your order is ready! Please collect from counter'
+    },
+    delivered: {
+      color: 'bg-gradient-to-r from-emerald-500 to-green-600',
+      icon: CheckCircle,
+      text: 'Order Delivered',
+      description: 'Thank you for your order! Hope you enjoyed your meal'
+    }
   };
 
-  const statusTexts = {
-    preparing: 'Preparing',
-    ready: 'Ready for Pickup',
-    delivered: 'Delivered'
-  };
+  const currentStatus = statusConfig[status];
+  const StatusIcon = currentStatus.icon;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
-      <div className="bg-white w-full max-w-md max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl">
-        <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex justify-center items-center p-4">
+      <div className="bg-white w-full max-w-md max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">Digital Bill</h2>
+            <div className="flex items-center space-x-3">
+              <div className="bg-gradient-to-br from-orange-400 to-red-500 p-2 rounded-xl">
+                <Receipt size={24} />
+              </div>
+              <h2 className="text-2xl font-bold">Digital Receipt</h2>
+            </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-colors"
             >
-              <X size={20} />
+              <X size={24} />
             </button>
           </div>
         </div>
         
-        <div className="p-6">
-          <div className="text-center mb-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-2">College Canteen</h3>
-            <p className="text-gray-600">Order ID: {orderId}</p>
-            <p className="text-gray-600 text-sm">{timestamp}</p>
+        <div className="p-8">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">College Canteen</h3>
+            <div className="bg-gray-100 rounded-xl p-4 mb-4">
+              <p className="text-gray-600 font-medium">Order ID: <span className="text-gray-800 font-bold">{orderId}</span></p>
+              <p className="text-gray-600 text-sm">{timestamp}</p>
+            </div>
           </div>
 
-          <div className={`${statusColors[status]} text-white p-3 rounded-lg mb-6 flex items-center justify-center`}>
-            <Clock className="mr-2" size={16} />
-            <span className="font-semibold">{statusTexts[status]}</span>
+          <div className={`${currentStatus.color} text-white p-4 rounded-2xl mb-8 shadow-lg`}>
+            <div className="flex items-center justify-center space-x-3">
+              <StatusIcon size={24} />
+              <div className="text-center">
+                <div className="font-bold text-lg">{currentStatus.text}</div>
+                <div className="text-sm opacity-90">{currentStatus.description}</div>
+              </div>
+            </div>
           </div>
           
-          <div className="border-t border-b border-gray-200 py-4 mb-4">
+          <div className="bg-gray-50 rounded-2xl p-6 mb-6">
+            <h4 className="font-bold text-gray-800 mb-4 text-lg">Order Details</h4>
             {items.map((item, index) => (
-              <div key={index} className="flex justify-between items-center py-2">
+              <div key={index} className="flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0">
                 <div>
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium text-gray-800">{item.name}</span>
                   <span className="text-gray-600 ml-2">× {item.quantity}</span>
                 </div>
-                <span className="font-semibold">₹{item.price * item.quantity}</span>
+                <span className="font-semibold text-gray-800">₹{item.price * item.quantity}</span>
               </div>
             ))}
           </div>
           
-          <div className="flex justify-between items-center text-xl font-bold mb-6">
-            <span>Total:</span>
-            <span className="text-green-600">₹{total}</span>
+          <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl p-6 mb-6 border border-emerald-200">
+            <div className="flex justify-between items-center">
+              <span className="text-2xl font-bold text-gray-800">Total Amount:</span>
+              <span className="text-3xl font-bold text-emerald-600">₹{total}</span>
+            </div>
           </div>
           
-          <div className="text-center text-gray-500 text-sm mb-4">
-            <p>⚠️ This bill cannot be screenshot</p>
-            <p>Bill will disappear after delivery</p>
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
+            <div className="text-center text-amber-800">
+              <p className="font-semibold mb-1">⚠️ Security Notice</p>
+              <p className="text-sm">This digital receipt cannot be screenshot or shared</p>
+              <p className="text-sm">Receipt will be automatically removed after delivery</p>
+            </div>
           </div>
           
-          <button className="w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center">
-            <Download className="mr-2" size={16} />
-            Download Bill
+          <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center space-x-2">
+            <Download size={20} />
+            <span>Download Receipt</span>
           </button>
         </div>
       </div>
