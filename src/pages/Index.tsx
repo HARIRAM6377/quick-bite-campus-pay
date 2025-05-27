@@ -4,6 +4,7 @@ import FoodCounter from '../components/FoodCounter';
 import Cart from '../components/Cart';
 import Bill from '../components/Bill';
 import AdminPanel from '../components/AdminPanel';
+import AdminLogin from '../components/AdminLogin';
 import { menuData } from '../data/menuData';
 import { Button } from '@/components/ui/button';
 
@@ -34,6 +35,8 @@ const Index = () => {
   const [isAdminPanel, setIsAdminPanel] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentBill, setCurrentBill] = useState<any>(null);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
 
   const addToCart = (item: any) => {
     setCartItems(prev => ({
@@ -119,13 +122,38 @@ const Index = () => {
     }
   };
 
+  const handleAdminLogin = (success: boolean) => {
+    if (success) {
+      setIsAdminAuthenticated(true);
+      setIsAdminPanel(true);
+      setShowAdminLogin(false);
+    }
+  };
+
+  const handleAdminPanelClick = () => {
+    if (!isAdminAuthenticated) {
+      setShowAdminLogin(true);
+    } else {
+      setIsAdminPanel(true);
+    }
+  };
+
+  const handleSwitchToStudent = () => {
+    setIsAdminPanel(false);
+    // Keep admin authenticated for the session
+  };
+
+  if (showAdminLogin) {
+    return <AdminLogin onLogin={handleAdminLogin} />;
+  }
+
   if (isAdminPanel) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <Header cartItems={0} onCartClick={() => {}} isAdmin={true} />
         <div className="p-6">
           <Button 
-            onClick={() => setIsAdminPanel(false)}
+            onClick={handleSwitchToStudent}
             className="mb-6 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
           >
             Switch to Student Panel
@@ -158,7 +186,7 @@ const Index = () => {
                 </h2>
                 <div className="flex flex-col space-y-3">
                   <Button 
-                    onClick={() => setIsAdminPanel(true)}
+                    onClick={handleAdminPanelClick}
                     className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-700 hover:via-indigo-700 hover:to-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
                   >
                     🔧 Admin Panel

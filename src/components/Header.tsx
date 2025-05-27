@@ -23,7 +23,7 @@ const Header = ({ cartItems, onCartClick, isAdmin = false }: HeaderProps) => {
             </div>
             <div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-300 via-pink-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg">
-                College Canteen
+                Sathyabama Canteen
               </h1>
               <p className="text-purple-200 text-sm font-medium flex items-center space-x-2">
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
