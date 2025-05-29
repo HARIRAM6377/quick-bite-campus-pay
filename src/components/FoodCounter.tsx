@@ -1,7 +1,6 @@
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { mobileUtils } from '../utils/mobileUtils';
-import { ImpactStyle } from '@capacitor/haptics';
 
 interface FoodItem {
   id: string;
@@ -22,13 +21,13 @@ interface FoodCounterProps {
 
 const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, color, icon }: FoodCounterProps) => {
   const handleAddToCart = async (item: FoodItem) => {
-    await mobileUtils.hapticFeedback(ImpactStyle.Light);
+    await mobileUtils.hapticFeedback('Light');
     onAddToCart(item);
     await mobileUtils.showToast(`${item.name} added to cart!`, 'short');
   };
 
   const handleRemoveFromCart = async (itemId: string) => {
-    await mobileUtils.hapticFeedback(ImpactStyle.Light);
+    await mobileUtils.hapticFeedback('Light');
     onRemoveFromCart(itemId);
   };
 

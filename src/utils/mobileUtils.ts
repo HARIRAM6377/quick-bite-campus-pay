@@ -1,15 +1,16 @@
 
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
-import { Toast } from '@capacitor/toast';
-import { LocalNotifications } from '@capacitor/local-notifications';
-import { StatusBar, Style } from '@capacitor/status-bar';
-import { SplashScreen } from '@capacitor/splash-screen';
-
+// Mobile utilities with graceful fallbacks for web
 export const mobileUtils = {
   // Haptic feedback for button presses
-  hapticFeedback: async (style: ImpactStyle = ImpactStyle.Medium) => {
+  hapticFeedback: async (style: 'Light' | 'Medium' | 'Heavy' = 'Medium') => {
     try {
-      await Haptics.impact({ style });
+      const { Haptics, ImpactStyle } = await import('@capacitor/haptics');
+      const styleMap = {
+        Light: ImpactStyle.Light,
+        Medium: ImpactStyle.Medium,
+        Heavy: ImpactStyle.Heavy
+      };
+      await Haptics.impact({ style: styleMap[style] });
     } catch (error) {
       console.log('Haptics not available:', error);
     }
@@ -18,6 +19,7 @@ export const mobileUtils = {
   // Show native toast messages
   showToast: async (message: string, duration: 'short' | 'long' = 'short') => {
     try {
+      const { Toast } = await import('@capacitor/toast');
       await Toast.show({
         text: message,
         duration: duration,
@@ -31,6 +33,7 @@ export const mobileUtils = {
   // Schedule order ready notification
   scheduleOrderNotification: async (orderId: string, estimatedTime: number) => {
     try {
+      const { LocalNotifications } = await import('@capacitor/local-notifications');
       await LocalNotifications.schedule({
         notifications: [
           {
@@ -53,6 +56,7 @@ export const mobileUtils = {
   // Set status bar style
   setStatusBarStyle: async (isDark: boolean = true) => {
     try {
+      const { StatusBar, Style } = await import('@capacitor/status-bar');
       await StatusBar.setStyle({
         style: isDark ? Style.Dark : Style.Light,
       });
@@ -64,6 +68,7 @@ export const mobileUtils = {
   // Hide splash screen
   hideSplashScreen: async () => {
     try {
+      const { SplashScreen } = await import('@capacitor/splash-screen');
       await SplashScreen.hide();
     } catch (error) {
       console.log('SplashScreen not available:', error);
@@ -73,6 +78,7 @@ export const mobileUtils = {
   // Request notification permissions
   requestNotificationPermissions: async () => {
     try {
+      const { LocalNotifications } = await import('@capacitor/local-notifications');
       const result = await LocalNotifications.requestPermissions();
       return result.display === 'granted';
     } catch (error) {

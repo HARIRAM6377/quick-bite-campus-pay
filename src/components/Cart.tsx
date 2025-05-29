@@ -1,7 +1,6 @@
 import React from 'react';
 import { X, ShoppingBag, CreditCard, Sparkles } from 'lucide-react';
 import { mobileUtils } from '../utils/mobileUtils';
-import { ImpactStyle } from '@capacitor/haptics';
 
 interface CartItem {
   id: string;
@@ -21,13 +20,13 @@ const Cart = ({ isOpen, onClose, items, onCheckout }: CartProps) => {
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   const handleCheckout = async () => {
-    await mobileUtils.hapticFeedback(ImpactStyle.Heavy);
+    await mobileUtils.hapticFeedback('Heavy');
     await mobileUtils.showToast('Processing your order...', 'short');
     onCheckout();
   };
 
   const handleClose = async () => {
-    await mobileUtils.hapticFeedback(ImpactStyle.Light);
+    await mobileUtils.hapticFeedback('Light');
     onClose();
   };
 
