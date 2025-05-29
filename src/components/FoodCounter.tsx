@@ -1,6 +1,7 @@
-
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { mobileUtils } from '../utils/mobileUtils';
+import { ImpactStyle } from '@capacitor/haptics';
 
 interface FoodItem {
   id: string;
@@ -20,9 +21,21 @@ interface FoodCounterProps {
 }
 
 const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, color, icon }: FoodCounterProps) => {
+  const handleAddToCart = async (item: FoodItem) => {
+    await mobileUtils.hapticFeedback(ImpactStyle.Light);
+    onAddToCart(item);
+    await mobileUtils.showToast(`${item.name} added to cart!`, 'short');
+  };
+
+  const handleRemoveFromCart = async (itemId: string) => {
+    await mobileUtils.hapticFeedback(ImpactStyle.Light);
+    onRemoveFromCart(itemId);
+  };
+
   return (
     <div className="mb-8">
       <div className={`${color} p-6 rounded-t-3xl shadow-2xl relative overflow-hidden`}>
+        
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20"></div>
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-full translate-y-12 -translate-x-12"></div>
@@ -69,7 +82,7 @@ const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, c
                       {quantity > 0 && (
                         <>
                           <button
-                            onClick={() => onRemoveFromCart(item.id)}
+                            onClick={() => handleRemoveFromCart(item.id)}
                             className="w-12 h-12 bg-gradient-to-br from-red-500 via-red-600 to-red-700 text-white rounded-2xl flex items-center justify-center hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95"
                           >
                             <Minus size={20} strokeWidth={3} />
@@ -82,7 +95,7 @@ const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, c
                         </>
                       )}
                       <button
-                        onClick={() => onAddToCart(item)}
+                        onClick={() => handleAddToCart(item)}
                         className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white rounded-2xl flex items-center justify-center hover:from-emerald-600 hover:via-emerald-700 hover:to-emerald-800 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95"
                       >
                         <Plus size={20} strokeWidth={3} />

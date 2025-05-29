@@ -1,6 +1,7 @@
-
 import React from 'react';
 import { X, ShoppingBag, CreditCard, Sparkles } from 'lucide-react';
+import { mobileUtils } from '../utils/mobileUtils';
+import { ImpactStyle } from '@capacitor/haptics';
 
 interface CartItem {
   id: string;
@@ -19,12 +20,24 @@ interface CartProps {
 const Cart = ({ isOpen, onClose, items, onCheckout }: CartProps) => {
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+  const handleCheckout = async () => {
+    await mobileUtils.hapticFeedback(ImpactStyle.Heavy);
+    await mobileUtils.showToast('Processing your order...', 'short');
+    onCheckout();
+  };
+
+  const handleClose = async () => {
+    await mobileUtils.hapticFeedback(ImpactStyle.Light);
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-lg z-50 flex justify-center items-end">
       <div className="bg-white w-full max-w-md max-h-[85vh] rounded-t-3xl overflow-hidden shadow-2xl border-t-4 border-gradient-to-r from-purple-500 to-pink-500 relative">
         <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white p-6 relative overflow-hidden">
+          
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600/30 to-pink-600/30"></div>
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
           
@@ -42,7 +55,7 @@ const Cart = ({ isOpen, onClose, items, onCheckout }: CartProps) => {
               </div>
             </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="p-2 hover:bg-white/20 rounded-2xl transition-all duration-200 transform hover:scale-110"
             >
               <X size={24} />
@@ -64,6 +77,7 @@ const Cart = ({ isOpen, onClose, items, onCheckout }: CartProps) => {
               {items.map((item, index) => (
                 <div key={item.id} className="group transform transition-all duration-300 hover:scale-[1.02]">
                   <div className="flex justify-between items-center p-5 bg-gradient-to-br from-white via-gray-50 to-white rounded-2xl border-2 border-gray-100 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                    
                     <div className="flex items-center space-x-4">
                       <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center font-bold text-purple-600 shadow-inner">
                         {index + 1}
@@ -91,6 +105,7 @@ const Cart = ({ isOpen, onClose, items, onCheckout }: CartProps) => {
         
         {items.length > 0 && (
           <div className="p-6 border-t bg-gradient-to-br from-white via-gray-50 to-purple-50 relative overflow-hidden">
+            
             <div className="absolute inset-0 bg-gradient-to-r from-purple-100/50 to-pink-100/50"></div>
             
             <div className="flex justify-between items-center mb-6 relative z-10">
@@ -103,7 +118,7 @@ const Cart = ({ isOpen, onClose, items, onCheckout }: CartProps) => {
               </span>
             </div>
             <button
-              onClick={onCheckout}
+              onClick={handleCheckout}
               className="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 hover:from-purple-700 hover:via-pink-700 hover:to-red-700 text-white py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center space-x-3 relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
