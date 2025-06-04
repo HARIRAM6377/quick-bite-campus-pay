@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { mobileUtils } from '../utils/mobileUtils';
@@ -54,11 +53,10 @@ const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, c
             {items.map((item) => {
               const quantity = cartItems[item.id] || 0;
               return (
-                <div key={item.id} className="group relative">
-                  <div className="flex items-center justify-between p-5 bg-gradient-to-br from-white via-gray-50 to-white rounded-2xl border-2 border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+                <div key={item.id} className="group">
+                  <div className="flex items-center justify-between p-5 bg-gradient-to-br from-white via-gray-50 to-white rounded-2xl border-2 border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
                     
-                    <div className="flex items-center space-x-4 flex-1 relative z-10">
+                    <div className="flex items-center space-x-4 flex-1 pr-4">
                       <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                         <img 
                           src={item.image || `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop&crop=faces`} 
@@ -78,16 +76,16 @@ const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, c
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-3 relative z-50">
+                    <div className="flex items-center space-x-3 flex-shrink-0">
                       {quantity > 0 && (
                         <>
                           <button
                             onClick={() => handleRemoveFromCart(item.id)}
-                            className="w-12 h-12 bg-gradient-to-br from-red-500 via-red-600 to-red-700 text-white rounded-2xl flex items-center justify-center hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95 relative z-50"
+                            className="w-12 h-12 bg-gradient-to-br from-red-500 via-red-600 to-red-700 text-white rounded-2xl flex items-center justify-center hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95"
                           >
                             <Minus size={20} strokeWidth={3} />
                           </button>
-                          <div className="min-w-[3rem] text-center relative z-50">
+                          <div className="min-w-[3rem] text-center">
                             <span className="font-bold text-2xl bg-gradient-to-br from-gray-100 via-white to-gray-100 px-4 py-2 rounded-xl shadow-inner border-2 border-gray-200 text-gray-800">
                               {quantity}
                             </span>
@@ -96,7 +94,7 @@ const FoodCounter = ({ title, items, onAddToCart, onRemoveFromCart, cartItems, c
                       )}
                       <button
                         onClick={() => handleAddToCart(item)}
-                        className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white rounded-2xl flex items-center justify-center hover:from-emerald-600 hover:via-emerald-700 hover:to-emerald-800 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95 relative z-50"
+                        className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white rounded-2xl flex items-center justify-center hover:from-emerald-600 hover:via-emerald-700 hover:to-emerald-800 transition-all duration-200 shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95"
                       >
                         <Plus size={20} strokeWidth={3} />
                       </button>
